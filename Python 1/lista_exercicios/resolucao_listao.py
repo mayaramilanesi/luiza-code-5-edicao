@@ -207,7 +207,7 @@ aluno possui a maior nota.
 
 # 5
 
-# a)
+""" # a)
 l = 2
 area_quadrado = 2*2
 print(area_quadrado)
@@ -237,10 +237,68 @@ print(int(media_pirulitos))
 davi = 13
 irma_davi = 7
 eh_mais_velho = davi > irma_davi
-print(eh_mais_velho)
+print(eh_mais_velho) """
 
 
-# 15
+
+"""  6
+
+z = 3
+print(z)
+
+z += 2
+print(z)
+
+z *= 6
+print(z)
+
+z /= 5 
+print(z) """
+
+
+
+
+# 7
+
+
+
+
+"""  8 
+
+ab = 10
+Ab = 20
+aB = 30
+AB = ab + Ab - aB
+fim = AB + 1
+print(fim)
+#1 """
+
+
+
+"""  9 
+
+valor = input('Informe um valor:')
+#Informe um valor:
+
+print('Valor informado:', valor)
+#Valor informado: 50
+
+tipo = type(valor)
+
+x_str = '123'
+
+x = int(x)
+
+xf = float(x)
+
+sao_iguais = x = xf
+
+print('Um float é igual a um int:', sao_iguais) """
+
+
+
+
+""" # 15
 
 valor_energia = float(input('Informe o valor da conta de energia:'))
 
@@ -253,6 +311,6 @@ print(type(valor_energia))
 
 valor_para_cada = valor_energia / qtd_moradores
 
-print(float(valor_para_cada))
+print(float(valor_para_cada)) """
 
 
