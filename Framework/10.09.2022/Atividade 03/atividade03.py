@@ -17,8 +17,15 @@ def persistencia_musica_pesquisar_todas():
     return lista_musicas
 
 def persistencia_pesquisar_pelo_codigo(codigo):
+    musica_procurada = None
+    for musica in MEMORIA_MUSICAS:
+        if musica["codigo"] == codigo:
+            musica_procurada = musica
+            # Pode parar o 'for' e sair dele
+            break 
+    # Fim do for
+    return musica_procurada
 
-    ...
 
 # =====================================
 # Regras / Casos de Uso / BO
@@ -26,6 +33,7 @@ def persistencia_pesquisar_pelo_codigo(codigo):
 
 def regras_musica_cadastrar(nova_musica):
     # TODO Validar a nova música
+    # Exemplo: Nome de música é unico.
     # regras_musica_validar_nova_musica(nova_musica)
     nova_musica = persistencia_musica_salvar(nova_musica)
     return nova_musica
@@ -74,9 +82,13 @@ def rota_musica_cadastrar(nova_musica: NovaMusica):
 def rota_musica_pesquisar_todas():
     return regras_musica_pesquisar_todas()
 
+
 @aplicacao_web.get("/musicas/{codigo}")
 def rota_musica_pesquisar_pelo_codigo(codigo: int):
     print("Consulta pelo código: ", codigo)
     return regras_musica_pesquisar_pelo_codigo(codigo)
-      
-      
+
+
+##############################################
+
+print(persistencia_musica_salvar())
