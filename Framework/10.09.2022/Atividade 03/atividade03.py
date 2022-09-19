@@ -13,7 +13,7 @@ def persistencia_musica_salvar(nova_musica):
     return nova_musica
 
 def persistencia_musica_pesquisar_todas():
-    lista_musicas = list(MEMORIA_MUSICAS)
+    lista_musicas = list()
     return lista_musicas
 
 def persistencia_pesquisar_pelo_codigo(codigo):
@@ -91,4 +91,3 @@ def rota_musica_pesquisar_pelo_codigo(codigo: int):
 
 ##############################################
 
-print(persistencia_musica_salvar())
