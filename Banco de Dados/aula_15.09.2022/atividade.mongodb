@@ -7,7 +7,7 @@
 // ----- 1. CREATE -----/
 
 // Insert a few documents into the sales collection.
-    use('luiza_code');
+    use('luiza_code'); // SERVE PARA APONTAR PARA O BANCO DE DADOS
     db.clients.insertMany([ // coleções seriam as tabelas
         { '_id': 1,'name': 'Luiza', 'email': 'Luiza@gmail.com'},
         { '_id': 2,'name': 'Maria', 'email': 'Maria@gmail.com'},
@@ -22,7 +22,7 @@
 
     use('luiza_code');
     db.products.insertMany([
-        {'_id': 101, 'name': 'Notebook', 'price': 5780.00, 'quantity': 18, 'updated_at': new Date() },
+        {'_id': 101, 'name': 'Notebook', 'price': 5780.00, 'quantity': 18, 'updated_at': new Date() }, // CRIA UMA DATA PARA O DOCUMENTO
         {'_id': 102, 'name': 'Mouse', 'price': 80.00, 'quantity': 56, 'updated_at': new Date() },
         {'_id': 103, 'name': 'Teclado', 'price': 200.00, 'quantity': 21, 'updated_at': new Date() },
         {'_id': 104, 'name': 'Mousepad', 'price': 50.00, 'quantity': 12, 'updated_at': new Date() },
@@ -41,7 +41,7 @@
 
 // -----  2. READ -------
     use('luiza_code');
-    db.clients.find({_id: ObjectId("626b2e144a4b2c867dc01957")});
+    db.clients.find({_id: ObjectId("626b2e144a4b2c867dc01957")}); // FIND FAZ A BUSCA DO QUE FOI ESPECIFICADO
 
     use('luiza_code');
     db.clients.find().pretty() // para deixar em formato Json
@@ -58,12 +58,12 @@
     // operadores gt e lt >=, <=, >, <
     use('luiza_code');
     db.products.find(
-        {price: {$gte:5000}}
+        {price: {$gte:5000}} // MAIOR QUE
     )
 
     use('luiza_code');
     db.products.find(
-        {price: {$lte: 5000}}
+        {price: {$lte: 5000}}// MENOR QUE
     )
 
     use('luiza_code');
@@ -80,13 +80,13 @@
     // clientes que começam com a letra J
     use('luiza_code');
     db.clients.find(
-        {name: {$regex: "^J"}}
+        {name: {$regex: "^J"}}// BUSCA TODOS OS CLIENTES QUE COMEÇAM COM A letra J
     );
 
     // clientes que terminam com a letra a
     use('luiza_code');
     db.clients.find(
-        {name: {$regex: "a$"}}
+        {name: {$regex: "a$"}}// BUSCA TODOS OS CLIENTES QUE TERMINAM COM A LETRA A
     );
 
 
@@ -101,7 +101,7 @@
     db.products.find(
         {
             $or: [
-                { price: {$gte: 5000.00}}, {quantity:12}
+                { price: {$gte: 5000.00}}, {quantity:12} // CONDIÇÕES
             ]
         }
     );
@@ -127,15 +127,15 @@
 
 
 
-    // operadores all/in
-    use('luiza_code');
+    // operadores all/in 
+    use('luiza_code'); // SERVE PARA TRABALHAR COM LISTAS
     db.wishlists.find(
-        {id_products: {$all: [101, 105]} }
+        {id_products: {$all: [101, 105]} } // PRECISA TER TODOS OS ITENS ESPECIFICADOS
     );
 
     use('luiza_code');
     db.wishlists.find(
-        {id_products: {$in: [101, 105]} }
+        {id_products: {$in: [101, 105]} } // PRECISA TER UM DOS ITENS ESPECIFICADOS
     )
 
 
@@ -146,12 +146,12 @@
     use('luiza_code');
     db.wishlists.find(
         {id_products: {$in: [101, 105]} }
-    ).limit(1)
+    ).limit(1) // LIMITA A QUANTIDADE DE RESULTADOS DA QUERY
 
 
     // sorte 1 asc or -1 desc
     use('luiza_code');
-    db.products.find().sort({"price": -1});
+    db.products.find().sort({"price": -1});// SORT RETORNA TODOS OS DADOS ORDENADOS PELO PREÇO DO MAIOR PARA O MENOR
 
 
 
@@ -165,8 +165,8 @@
     quando queremos acrescentar e / ou alterar somente alguns campos no document, sem apagar todos os outros. */
     use('luiza_code');
     db.products.update(
-        { _id: 101},
-        { $set:  {'price': 5750.00}}
+        { _id: 101}, // DOCUMENTO QUE DIZ QUAL A QUERY QUEREMOS ATUALIZAR
+        { $set:  {'price': 5750.00}} // SET É UTILIZADO PARA ATUALIZAR APENAS O ARGUMENTO QUE É COLOCADO NA SUA FRENTE
     );
 
     //Cria um novo document, caso não exista nenhum com as características passadas.
@@ -174,14 +174,14 @@
     db.products.updateOne(
         { _id: 107},
         { $set:  {'price': 5780.00}}, 
-        { upsert: true}
+        { upsert: true} // CRIA O DOCUMENTO CASO NÃO ACHE
     );
 
     // Remove os campos especificados nele.
     use('luiza_code');
     db.products.update(
         { _id: 105},
-        { $unset: {price: 5780.00}}
+        { $unset: {price: 5780.00}} // DELETA O CAMPO PASSADO NO ARGUMENTO 
     )
 
 

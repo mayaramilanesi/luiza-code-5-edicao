@@ -1,0 +1,222 @@
+db.createCollection("Order_items");
+
+​
+//create user
+info_insert = db.users.insertOne( // cria uma variável para guardar esses valores para serem add posteriormente
+    {
+        "email": "lu_domagalu@gmail.com",
+        "password": "213sd312re3",
+        "is_active": true,
+        "is_admin": false
+    }
+);
+​
+​
+user_x = db.users.find({"_id": ObjectId("6329bcf66f4d78a5c68f00e7")}).pretty();
+​
+user_x;
+// create address
+db.address.find().pretty();
+​
+​
+// valida a existência de endereço para usuário X
+db.address.find({
+    'user._id': ObjectId("6329bcf66f4d78a5c68f00e7")
+});
+user_address;
+user_x;
+​
+// inserir endereço quando não existe nenhum endereço para usuário X
+info_insert_address = db.address.insertOne(
+    {
+       "user": {
+                "_id" : ObjectId("6329bcf66f4d78a5c68f00e7"),
+                "email" : "lu_domagalu@gmail.com",
+                "password" : "213sd312re3",
+                "is_active" : true,
+                "is_admin" : false
+        },
+       "address: [
+           {
+              "street": "Rua Quarenta e Sete, Numero 3",
+              "cep": "8465312",
+              "district": "São Paulo",
+              "city": "São Paulo",
+              "state": "São Paulo",
+              "is_delivery": true
+           }
+       ]
+    }
+);
+​
+info_insert_address;
+​
+// inserir endereço quando existe endereço para usuário X
+db.address.updateOne(
+    {"_id": ObjectId("6329c3036f4d78a5c68f00e8")},
+    {
+        $addToSet: {
+            address: {
+              "street": "Rua Quarenta e Sete, Numero 3",
+              "cep": "000000000",
+              "district": "Bauru",
+              "city": "Bauru",
+              "state": "Bauru",
+              "is_delivery": true
+           }
+        }
+    }
+);
+​
+info_insert_address;
+db.address.find();
+db.address.find({
+    "_id": ObjectId("6329c3036f4d78a5c68f00e8")
+});
+​
+// products
+db.products.find().pretty();
+​
+db.products.insertMany([
+    {
+        "name" : "Bicicleta Aro 29 Freio a Disco 21M. Velox Branca/Verde - Ello Bike",
+        "description" : "Bicicleta produzida com materiais de qualidade e foi criada pensando nas pessoas que desejam praticar o ciclismo e ter uma vida saudável sem abrir mão de conforto um excelente custo x benefício.",
+        "price" : 898.2,
+        "image" : "https://a-static.mlcdn.com.br/800x560/bicicleta-aro-29-freio-a-disco-21m-velox-branca-verde-ello-bike/ellobike/6344175219/b84d5dd41098961b4c2f397af40db4ce.jpg",
+        "code" : 97880
+    },
+    {
+        "name" : "Fritadeira Elétrica sem Óleo/Air Fryer Nell Fit - Preto 3,2L com Timer",
+        "description" : "A fritadeira elétrica Nell Fit é um eletroportátil que não pode faltar na sua cozinha. O produto proporciona uma alimentação mais saudável, pois não utiliza óleo/Air Fryer em seu processo de cozimento. A fritadeira na cor preta é compacta e produzida em PP, ocupando menos espaço, possui luz indicadora de funcionamento, controle de temperatura, cesta removível antiaderente, capacidade total de 4,2L e cesto com capacidade de 3,2L. Sua alça fria garante maior segurança ao manusear a fritadeira e além disso, ela possui timer de 30 minutos sonoro e com desligamento automático. Agora é só preparar batatinha frita, coxinha, bolinha de queijo e pastel na sua fritadeira elétrica!",
+        "price" : 369.0,
+        "image" : "https://a-static.mlcdn.com.br/800x560/fritadeira-eletrica-sem-oleo-air-fryer-nell-fit-preto-32l-com-timer/magazineluiza/222479100/64ef4d6200a6efc6cce6d265588910a9.jpg",
+        "code" : 222479100
+    }
+]);
+​
+​
+// order
+​
+// Busca o endereco do usuário X que está com o is_delivery = true
+db.address.aggregate([
+    {
+        $match:{ // está filtrando dentro da colection address a lista de endereços com esse e-mail e verificando se usuário está ativo
+            "user.email": "lu_domagalu@gmail.com",
+            "user.is_active": true
+       }
+    },
+    {
+       $unwind: '$address' // transforma em vários documentos
+    },
+    {
+       $match: {
+    		'address.is_delivery':true // verifica qual endereço está ativado para delivery
+        }
+    }
+]);
+​
+db.orders.insertOne({ // INSERINDO PEDIDO
+    user: {
+        "_id" : ObjectId("6329bcf66f4d78a5c68f00e7"),
+        "email" : "lu_domagalu@gmail.com",
+        "password" : "213sd312re3",
+        "is_active" : true,
+        "is_admin" : false
+    },
+    price: 1796.4,
+    paid: false,
+    address: {
+        "street" : "Rua Quarenta e Sete, Numero 3",
+        "cep" : "8465312",
+        "district" : "São Paulo",
+        "city" : "São Paulo",
+        "state" : "São Paulo",
+        "is_delivery" : true
+    }
+});
+
+
+info_order_insert;
+​
+// oder_item
+db.orders.find({ // BUSCANDO PELO OBJECT ID A ORDEM DE SERVIÇO
+    "_id": ObjectId("6329e1326f4d78a5c68f00ec")
+});
+​
+db.products.find({});
+​
+db.order_items.insertMany([
+    {
+        order: {
+    "_id" : ObjectId("6329e1326f4d78a5c68f00ec"),
+    "user" : {
+        "_id" : ObjectId("6329bcf66f4d78a5c68f00e7"),
+        "email" : "lu_domagalu@gmail.com",
+        "password" : "213sd312re3",
+        "is_active" : true,
+        "is_admin" : false
+    },
+    "price" : 1796.4,
+    "paid" : false,
+    "address" : {
+        "street" : "Rua Quarenta e Sete, Numero 3",
+        "cep" : "8465312",
+        "district" : "São Paulo",
+        "city" : "São Paulo",
+        "state" : "São Paulo",
+        "is_delivery" : true
+    }
+},
+        product: {
+            "_id" : ObjectId("6329cf686f4d78a5c68f00ea"),
+            "name" : "Bicicleta Aro 29 Freio a Disco 21M. Velox Branca/Verde - Ello Bike",
+            "description" : "Bicicleta produzida com materiais de qualidade e foi criada pensando nas pessoas que desejam praticar o ciclismo e ter uma vida saudável sem abrir mão de conforto um excelente custo x benefício.",
+            "price" : 898.2,
+            "image" : "https://a-static.mlcdn.com.br/800x560/bicicleta-aro-29-freio-a-disco-21m-velox-branca-verde-ello-bike/ellobike/6344175219/b84d5dd41098961b4c2f397af40db4ce.jpg",
+            "code" : 97880.0
+    }
+
+    },
+    {
+        order: {
+    "_id" : ObjectId("6329e1326f4d78a5c68f00ec"),
+    "user" : {
+        "_id" : ObjectId("6329bcf66f4d78a5c68f00e7"),
+        "email" : "lu_domagalu@gmail.com",
+        "password" : "213sd312re3",
+        "is_active" : true,
+        "is_admin" : false
+    },
+    "price" : 1796.4,
+    "paid" : false,
+    "address" : {
+        "street" : "Rua Quarenta e Sete, Numero 3",
+        "cep" : "8465312",
+        "district" : "São Paulo",
+        "city" : "São Paulo",
+        "state" : "São Paulo",
+        "is_delivery" : true
+    }
+},
+        product: {
+            "_id" : ObjectId("6329cf686f4d78a5c68f00eb"),
+            "name" : "Fritadeira Elétrica sem Óleo/Air Fryer Nell Fit - Preto 3,2L com Timer",
+            "description" : "A fritadeira elétrica Nell Fit é um eletroportátil que não pode faltar na sua cozinha. O produto proporciona uma alimentação mais saudável, pois não utiliza óleo/Air Fryer em seu processo de cozimento. A fritadeira na cor preta é compacta e produzida em PP, ocupando menos espaço, possui luz indicadora de funcionamento, controle de temperatura, cesta removível antiaderente, capacidade total de 4,2L e cesto com capacidade de 3,2L. Sua alça fria garante maior segurança ao manusear a fritadeira e além disso, ela possui timer de 30 minutos sonoro e com desligamento automático. Agora é só preparar batatinha frita, coxinha, bolinha de queijo e pastel na sua fritadeira elétrica!",
+            "price" : 369.0,
+            "image" : "https://a-static.mlcdn.com.br/800x560/fritadeira-eletrica-sem-oleo-air-fryer-nell-fit-preto-32l-com-timer/magazineluiza/222479100/64ef4d6200a6efc6cce6d265588910a9.jpg",
+            "code" : 222479100.0
+        }
+    }
+]);
+​
+​
+db.products.find({});
+
+db.order_items.find({});
+
+​// SKIP(TRAZ A PARTIR DE QUAL ÍNDICE VAMOS USAR); LIMIT(QUANTIDADE DE ITENS NA PÁGINA); COUNT(QUANTIDADE DE ITENS)
+db.order_items.find({}).skip(0).limit(2).count(); // SORT(ORDENA)
+​
+db.address.find({});
+db.address.deleteOne({"_id" : ObjectId("6329c3516f4d78a5c68f00e9")});
+db.address.updateMany({}, {$rename: {"users": "user"}});
